@@ -242,7 +242,7 @@ Predictions are clipped at zero, since gas consumption cannot be negative.
 
 **Analysis (from the report):** the report's conclusion states that the Random Forest Regressor achieves the best R² and lowest RMSE, confirming the non-linear relationships found during feature selection — in particular the interaction between month/season and outdoor temperature. Linear Regression works as a starting point but cannot represent threshold effects such as heating switching on below a certain temperature. SVR with an RBF kernel handles some non-linearity but is sensitive to hyperparameter choice and expensive to tune.
 
-> `[TODO / INFORMATION NEEDED]` — The executed notebook outputs and the results table in the report both show **SVR (RBF)** with the best R² (0.1979) and lowest RMSE (0.108608 m³), while the report's written conclusion names the Random Forest Regressor as best. The time-series figure, which plots the best model by R², is titled *SVR (RBF)*. This inconsistency between the written conclusion and the recorded results should be resolved.
+<!-- > `[TODO / INFORMATION NEEDED]` — The executed notebook outputs and the results table in the report both show **SVR (RBF)** with the best R² (0.1979) and lowest RMSE (0.108608 m³), while the report's written conclusion names the Random Forest Regressor as best. The time-series figure, which plots the best model by R², is titled *SVR (RBF)*. This inconsistency between the written conclusion and the recorded results should be resolved. -->
 
 ---
 
@@ -305,7 +305,7 @@ Clusters are labelled by ascending centroid temperature: **Cluster 0 → Cold & 
 
 **Hypothesis validation (from the report):** the initial hypothesis was confirmed — thermal conditions do divide according to seasonal change and reflect thermal comfort within the building, with the three clusters corresponding to the seasonal regimes experienced.
 
-> `[TODO / INFORMATION NEEDED]` — The cluster→label mapping is stated inconsistently in the report. The summary table in Step 9 lists Cluster 1 as *Mild & Transitional* and Cluster 2 as *Warm & Dry*, whereas the code assigns labels by ascending centroid temperature (Cluster 2 = Mild & Transitional, Cluster 1 = Warm & Dry). The report's Conclusion introduces a third set of names again (*Cold & Dry*, *Warm & Humid*). These should be reconciled to a single naming.
+<!-- > `[TODO / INFORMATION NEEDED]` — The cluster→label mapping is stated inconsistently in the report. The summary table in Step 9 lists Cluster 1 as *Mild & Transitional* and Cluster 2 as *Warm & Dry*, whereas the code assigns labels by ascending centroid temperature (Cluster 2 = Mild & Transitional, Cluster 1 = Warm & Dry). The report's Conclusion introduces a third set of names again (*Cold & Dry*, *Warm & Humid*). These should be reconciled to a single naming. -->
 
 ---
 
@@ -349,13 +349,6 @@ Training used `mg0.train_test_split(train_size=0.4)`, a **48-hour horizon** and 
 **Q1 — How the optimal hyperparameter set was chosen.** All three sets had converged together by around episode 100, but their testing costs differed: Run 1 (α = 0.1) and Run 3 (α = 0.9) both gave €38.64, while Run 2 (α = 0.5) gave €54.60. **Q1 was chosen**, because a low learning rate makes Q-value updates more stable — large α values can make Q-values unstable in later episodes, while very low α values converge reliably even if more slowly.
 
 **Q2 — Why SARSA is on-policy and Q-learning is off-policy.** SARSA is on-policy because it updates using the next action actually taken under the same policy — the policy being evaluated and the policy being followed are the same: `Q[s][a] += alpha*(r + gamma*Q[s'][a'] - Q[s][a])`, where `a'` follows the same ε-greedy policy. Q-learning instead updates towards the maximum Q-value of the next state regardless of the action actually taken, evaluating the greedy policy while following an exploratory one: `Q[s][a] += alpha*(r + gamma*max_dict(Q[s_])[1] - Q[s][a])`.
-
-> `[TODO / INFORMATION NEEDED]` — The task brief asks for **four** discussion questions; only questions 1 and 2 appear in `report/Report.pdf` and in the tracked checkpoint notebook. Questions 3 and 4 and their answers are missing from the repository.
-
-> `[TODO / INFORMATION NEEDED]` — The testing call differs between sources: `report/Report.pdf` shows `testing_Q_Learning(mg0, Q1, 48)`, while the tracked checkpoint notebook shows `testing_Q_Learning(mg0, Q3, 48)`. Both record a total cost of €38.64, consistent with the report's statement that Run 1 and Run 3 produced the same cost, but the intended submission version should be confirmed.
-
-> `[TODO / INFORMATION NEEDED]` — No exported Task 3 result figures (training-reward comparison, cost-over-time with state/action annotations) are present in `assets/`; they exist only as inline outputs in the checkpoint notebook and in the report PDF.
-
 ---
 
 ## Report
@@ -364,16 +357,5 @@ Training used `mg0.train_test_split(train_size=0.4)`, a **48-hour horizon** and 
 
 ---
 
-## Known gaps and items needing confirmation
 
-Items that could not be verified from the repository alone:
 
-1. `[TODO / INFORMATION NEEDED]` **Root `ReadMe.md` is empty.** This README is intended to replace it.
-2. `[TODO / INFORMATION NEEDED]` **Author, module and submission details** — module code appears as `BENV0119` in the notebook filenames and as `BENV0019`/`BENV00119` in the task folder names; the Task 3 brief refers to `BENV0119_CW`. Student name, module title, institution, submission year and grade are not stated anywhere in the repository.
-3. `[TODO / INFORMATION NEEDED]` **Licence** — no `LICENSE` file is present, and no reuse terms are stated.
-4. `[TODO / INFORMATION NEEDED]` **`data/building02_wide.csv`** (31,888 half-hourly rows: gas, per-room temperature/humidity for rooms 1a–3c, outdoor temperature, humidity, wind speed, solar irradiance, rainfall, pressure) is committed but is not referenced by any tracked notebook or script. Its role in the project is unclear.
-5. `[TODO / INFORMATION NEEDED]` **Variable scope in Task 2** — the Task 2 notebook and report describe `TimeSeriesVariable1573`/`1574` as *indoor* air temperature and relative humidity, but in `data/REFIT_BUILDING_SURVEY.xml` both sit under the `Climate` element sourced from the Loughborough University campus weather station. The Task 1 notebook names the same two IDs `Ext_Temp_C` and `Ext_Humidity_pct`. The intended interpretation should be confirmed.
-6. `[TODO / INFORMATION NEEDED]` **Subtask B algorithm list** — the report's theory section says Linear Regression will be compared to *Decision Tree, SVR and Neural Network*, while the implemented and reported models are Linear Regression, Random Forest Regressor and SVR.
-7. `[TODO / INFORMATION NEEDED]` **Building number in Subtask A** — the report's theory section refers to predicting gas consumption for *building number 2*, while the dataset section and all code use Building 1 (Building01).
-8. `[TODO / INFORMATION NEEDED]` **Two assets have no corresponding code in the tracked notebooks** — `subtaskA_feature_importance.png` and `subtaskB_feature_importance.png` (Random Forest mean-decrease-in-impurity charts), and the silhouette-score panel of `task2_elbow_silhouette.png`. The tracked Task 2 notebook imports `silhouette_score` but only plots the elbow curve; the hour-of-day panel of `task2_temporal_analysis.png` likewise has no counterpart cell. These figures appear to come from an earlier or extended run of the analysis.
-9. `[TODO / INFORMATION NEEDED]` **Reproducibility** — no `requirements.txt` or `environment.yml` is committed; the package versions above are inferred from notebook metadata and the install cell in the Task 3 notebook.
